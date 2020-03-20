@@ -6,27 +6,63 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
+Bundle 'ycm-core/YouCompleteMe'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'preservim/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
-Bundle 'Valloric/YouCompleteMe'
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'justinmk/vim-sneak'
 Plugin 'itchyny/lightline.vim'
 Plugin 'tpope/vim-speeddating'
 Plugin 'jiangmiao/auto-pairs'
-Plugin 'terryma/vim-multiple-cursors'
+" Plugin 'terryma/vim-multiple-cursors'
 Plugin 'frazrepo/vim-rainbow'
 Plugin 'kshenoy/vim-signature'
 Plugin 'rafi/awesome-vim-colorschemes'
+"C# - disabled because YouCompleteMe supports C# and OmniSharp doesn't appear
+"to be working
+" Bundle 'OmniSharp/omnisharp-vim'
+Plugin 'dense-analysis/ale'
 
 call vundle#end()            " required
+
 filetype plugin indent on    " required
+
+"Syntax highlighting on
+syntax on
 
 "NerCommenter
 filetype plugin on
+
+"Autocomplete commands with menu
+
+set wildmenu
+
+"C# Autocomplete Omnisharp
+	"asynchronous server
+let g:OmniSharp_server_stdio = 1
+
+
+"Autocomplete YouCompleteMe - added python to blacklist due to Kite
+let g:ycm_filetype_blacklist = {
+      \ 'python': 1,
+      \ 'tagbar': 1,
+      \ 'notes': 1,
+      \ 'markdown': 1,
+      \ 'netrw': 1,
+      \ 'unite': 1,
+      \ 'text': 1,
+      \ 'vimwiki': 1,
+      \ 'pandoc': 1,
+      \ 'infolog': 1,
+      \ 'leaderf': 1,
+      \ 'mail': 1
+      \}
+
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 "Spliting
 set splitbelow
@@ -41,6 +77,7 @@ nnoremap <space> za
 set laststatus=2
 "set noshowmode
 
+"Python specific settings
 au BufNewFile,BufRead *.py
     \ set tabstop=4
 "    \ set softtabstop=4
@@ -50,19 +87,25 @@ au BufNewFile,BufRead *.py
     \ set autoindent
     \ set fileformat=unix 
     \ set encoding=utf-8
+set completeopt+=noinsert
 
 "au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 set relativenumber
 set number
 
-let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-
 let mapleader = ","
-set clipboard=unnamed
+" set clipboard=unnamed
 
 "MAPs and remaps
+
+    "auto-pairs
+    inoremap <C-'> ''<C-[>a
+
+    "copy and paste to system clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>y "+y
+nnoremap <leader>d "+d
 
     "split navigations
 nnoremap <C-J> <C-W><C-J>
@@ -88,7 +131,7 @@ nnoremap <C-t>r :tabdo
 map <leader>/ /\v
     
     "NERD Tree
-map <C-n> :NERDTreeToggle<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
 
     "NERD commenter
     " Add spaces after comment delimiters by default
