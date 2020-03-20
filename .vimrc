@@ -5,26 +5,29 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'gmarik/Vundle.vim'
+Plugin 'gmarik/Vundle.vim' "Vundle plugin manager
+
+"Auto complete plugin for Cfamily etc Disabled for python due to Kite Bundle
 Bundle 'ycm-core/YouCompleteMe'
-Plugin 'vim-scripts/indentpython.vim'
-Plugin 'preservim/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-surround'
-Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Plugin 'vim-scripts/indentpython.vim' "Matches cloasely indents for python with PEP 8
+Plugin 'preservim/nerdcommenter' "fast comments (i.e. <leader>c<space> [un]comments a line)
+Plugin 'scrooloose/nerdtree' "adds tree like file browser (mapped to <leader><C-n>)
+Plugin 'tpope/vim-fugitive' "Git plugin for vim (i.e. :G, :Gstatus)
+Plugin 'tpope/vim-surround' "surround plugin cs{( changes {} to ()
+Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "needed for lightline
 Plugin 'justinmk/vim-sneak'
-Plugin 'itchyny/lightline.vim'
-Plugin 'tpope/vim-speeddating'
-Plugin 'jiangmiao/auto-pairs'
+Plugin 'itchyny/lightline.vim' "cool status bar at the bottom
+Plugin 'tpope/vim-speeddating' "Fast adding and subtracting dates (i.e. press <C-a> or <C-x> on: 29 mar 2020)
+Plugin 'jiangmiao/auto-pairs' "Auto close () {} etc
 " Plugin 'terryma/vim-multiple-cursors'
-Plugin 'frazrepo/vim-rainbow'
-Plugin 'kshenoy/vim-signature'
-Plugin 'rafi/awesome-vim-colorschemes'
+Plugin 'frazrepo/vim-rainbow' "brackets' color pairs (i.e. [[]] middle ones have different color than outer ones)
+Plugin 'kshenoy/vim-signature' "Displays marks on a bar on the left
+Plugin 'rafi/awesome-vim-colorschemes' "predefined colorschemes (i.e. :colo dracula)
 "C# - disabled because YouCompleteMe supports C# and OmniSharp doesn't appear
 "to be working
 " Bundle 'OmniSharp/omnisharp-vim'
 Plugin 'dense-analysis/ale'
+
 
 call vundle#end()            " required
 
@@ -131,9 +134,13 @@ nnoremap <C-t>r :tabdo
 map <leader>/ /\v
     
     "NERD Tree
-nnoremap <C-n> :NERDTreeToggle<CR>
+nnoremap <leader><C-n> :NERDTreeToggle<CR>
 
-    "NERD commenter
+
+"Disable auto comments (after newline etc)
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+"NERD commenter
     " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
     " Use compact syntax for prettified multi-line comments
