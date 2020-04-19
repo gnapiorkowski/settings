@@ -9,22 +9,28 @@ Plugin 'gmarik/Vundle.vim' "Vundle plugin manager
 
 "Auto complete plugin for Cfamily etc Disabled for python due to Kite Bundle
 Bundle 'ycm-core/YouCompleteMe'
+
 Plugin 'vim-scripts/indentpython.vim' "Matches cloasely indents for python with PEP 8
 Plugin 'preservim/nerdcommenter' "fast comments (i.e. <leader>c<space> [un]comments a line)
 Plugin 'scrooloose/nerdtree' "adds tree like file browser (mapped to <leader><C-n>)
 Plugin 'tpope/vim-fugitive' "Git plugin for vim (i.e. :G, :Gstatus)
 Plugin 'tpope/vim-surround' "surround plugin cs{( changes {} to ()
-Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "needed for lightline
+" Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "needed for lightline
+" Plugin 'itchyny/lightline.vim' "cool status bar at the bottom
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
 Plugin 'justinmk/vim-sneak'
-Plugin 'itchyny/lightline.vim' "cool status bar at the bottom
 Plugin 'tpope/vim-speeddating' "Fast adding and subtracting dates (i.e. press <C-a> or <C-x> on: 29 mar 2020)
+Plugin 'ryanoasis/vim-devicons' "Adds icons
+Plugin 'Yggdroot/indentLine' "Adds vertical indents' lines
 Plugin 'jiangmiao/auto-pairs' "Auto close () {} etc
 " Plugin 'terryma/vim-multiple-cursors'
 Plugin 'frazrepo/vim-rainbow' "brackets' color pairs (i.e. [[]] middle ones have different color than outer ones)
 Plugin 'kshenoy/vim-signature' "Displays marks on a bar on the left
 Plugin 'rafi/awesome-vim-colorschemes' "predefined colorschemes (i.e. :colo dracula)
-"C# - disabled because YouCompleteMe supports C# and OmniSharp doesn't appear
-"to be working
+" C# - disabled because YouCompleteMe supports C# and OmniSharp doesn't appear
+" to be working
 " Bundle 'OmniSharp/omnisharp-vim'
 Plugin 'dense-analysis/ale'
 
@@ -36,11 +42,13 @@ filetype plugin indent on    " required
 "Syntax highlighting on
 syntax on
 
+"Airline theme setting
+let g:airline_theme='dracula'
+
 "NerCommenter
 filetype plugin on
 
 "Autocomplete commands with menu
-
 set wildmenu
 
 "C# Autocomplete Omnisharp
@@ -79,6 +87,17 @@ nnoremap <space> za
 "Enable lightline - cool bottom bar
 set laststatus=2
 "set noshowmode
+
+"Tabstops for all
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set autoindent
+
+"Lua specific settings
+au BufNewFile,BufRead *.lua
+    \ set tabstop=2
+    \ set shiftwidth=2
 
 "Python specific settings
 au BufNewFile,BufRead *.py
