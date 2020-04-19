@@ -92,21 +92,22 @@ local themes = {
 local chosen_theme = themes[6]
 local modkey       = "Mod4"
 local altkey       = "Mod1"
-local terminal = os.getenv("TERMINAL") or "st"
+local terminal = os.getenv("TERMINAL") or "alacritty" or "st"
 local vi_focus     = false -- vi-like client focus - https://github.com/lcpz/awesome-copycats/issues/275
 local cycle_prev   = true -- cycle trough all previous client or just the first -- https://github.com/lcpz/awesome-copycats/issues/274
 local editor       = os.getenv("EDITOR") or "vim"
-local gui_editor   = os.getenv("GUI_EDITOR") or "code"
+local gui_editor   = os.getenv("GUI_EDITOR") or "gvim" or "code"
 local browser      = os.getenv("BROWSER") or "firefox"
-local filemanager  = "thunar"
+local file_manager  = os.getenv("FILE_MANAGER") or "thunar"
+
 local scrlocker    = "slock"
 
 awful.util.terminal = terminal
 awful.util.tagnames = { "main", "stuff", "mul", "com", "5" , "6", "7", "8", "9"}
 awful.layout.layouts = {
     awful.layout.suit.spiral,
-    awful.layout.suit.floating,
-    awful.layout.suit.tile,
+    -- awful.layout.suit.floating,
+    -- awful.layout.suit.tile,
     -- awful.layout.suit.tile.left,
     -- awful.layout.suit.tile.bottom,
     -- awful.layout.suit.tile.top,
@@ -115,7 +116,7 @@ awful.layout.layouts = {
     --awful.layout.suit.spiral.dwindle,
     -- awful.layout.suit.max,
     --awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
+    -- awful.layout.suit.magnifier,
     --awful.layout.suit.corner.nw,
     --awful.layout.suit.corner.ne,
     --awful.layout.suit.corner.sw,
@@ -218,7 +219,7 @@ mymainmenu = freedesktop.menu.build({
     before = {
         { "Terminal", terminal, menubar.utils.lookup_icon("utilities-terminal") },
         { "Browser", browser, menubar.utils.lookup_icon("internet-web-browser") },
-        { "Files", awful.spawn.with_shell(filemanager), menubar.utils.lookup_icon("system-file-manager") },
+	{ "Files", file_manager, menubar.utils.lookup_icon("system-file-manager") },
         -- other triads can be put here
     },
     after = {
@@ -428,8 +429,6 @@ globalkeys = my_table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
-              {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
 
@@ -477,7 +476,19 @@ globalkeys = my_table.join(
             beautiful.volume.update()
         end,
         {description = "volume up", group = "Media"}),
+    awful.key({ modkey, "Shift"   }, "]",
+        function ()
+            os.execute(string.format("amixer -q set %s 5%%+", beautiful.volume.channel))
+            beautiful.volume.update()
+        end,
+        {description = "volume up", group = "Media"}),
     awful.key({  }, "XF86AudioLowerVolume",
+        function ()
+            os.execute(string.format("amixer -q set %s 5%%-", beautiful.volume.channel))
+            beautiful.volume.update()
+        end,
+        {description = "volume down", group = "Media"}),
+    awful.key({ modkey, "Shift"   }, "[",
         function ()
             os.execute(string.format("amixer -q set %s 5%%-", beautiful.volume.channel))
             beautiful.volume.update()
@@ -492,33 +503,41 @@ globalkeys = my_table.join(
 
 
     -- Media playback control
-    awful.key({}, "XF86AudioNext",
-        function ()
-            os.execute("playerctl next")
-        end,
+    awful.key({}, "XF86AudioNext", function () os.execute("playerctl next") end,
         {description = "Next track", group = "Media"}),
-    awful.key({}, "XF86AudioPrev",
-        function ()
-            os.execute("playerctl previous")
-        end,
+
+    awful.key({ modkey, "Shift"   }, ".", function () os.execute("playerctl next") end,
+        {description = "Next track", group = "Media"}),
+
+    awful.key({}, "XF86AudioPrev", function () os.execute("playerctl previous") end,
         {description = "Previous track", group = "Media"}),
-    awful.key({}, "XF86AudioPlay",
-        function ()
-            os.execute("playerctl play-pause")
-        end,
+
+    awful.key({ modkey, "Shift"   }, ",", function () os.execute("playerctl previous") end,
+        {description = "Previous track", group = "Media"}),
+
+    awful.key({}, "XF86AudioPlay", function () os.execute("playerctl play-pause") end,
+        {description = "Play/Pause", group = "Media"}),
+
+    awful.key({ modkey,           }, "space", function () os.execute("playerctl play-pause") end,
         {description = "Play/Pause", group = "Media"}),
 
 
     -- User programs
     awful.key({ modkey }, "b", function () awful.spawn(browser) end,
               {description = "run browser", group = "launcher"}),
-    awful.key({ modkey }, "e", function () awful.spawn(filemanager) end,
+    awful.key({ modkey }, "e", function () awful.spawn.with_shell(terminal .. " vifm") end,
+              {description = "launch Minecraft", group = "launcher"}),
+    awful.key({ modkey, "Shift" }, "e", function () awful.spawn(file_manager) end,
               {description = "run browser", group = "launcher"}),
     awful.key({ modkey }, "a", function () awful.spawn(gui_editor) end,
               {description = "run gui editor", group = "launcher"}),
-	      awful.key({  }, "XF86Tools", function () awful.spawn("spotify") end,
-              {description = "launch Spotify", group = "launcher"}),
-    awful.key({  }, "XF86HomePage", function () awful.spawn.with_shell("minecraft-launcher") end,
+      awful.key({  }, "XF86Tools", function () awful.spawn("pavucontrol") end,
+              {description = "launch pavucontrol", group = "launcher"}),
+      awful.key({  }, "XF86Calculator", function () awful.spawn("galculator") end,
+              {description = "launch calculator", group = "launcher"}),
+    awful.key({  }, "XF86HomePage", function () awful.spawn.with_shell("terraria") end,
+              {description = "launch Minecraft", group = "launcher"}),
+    awful.key({  }, "XF86Mail", function () awful.spawn.with_shell("minecraft-launcher") end,
               {description = "launch Minecraft", group = "launcher"}),
 
     -- Default
@@ -695,8 +714,14 @@ awful.rules.rules = {
     { rule = { class = "Gimp", role = "gimp-image-window" },
           properties = { maximized = true } },
 
+    { rule = { class = "Galculator"},
+          properties = { floating = true, above = true } },
+
     { rule = { class = "Spotify" },
       properties = { screen = 2, tag = awful.util.tagnames[3], swtichtotag = true} },
+
+    { rule = { class = "[Dd]iscord" },
+      properties = { screen = 2, tag = awful.util.tagnames[4], swtichtotag = true} },
 
     { rule = { class = "yakuake" },
       properties = { floating = true } },

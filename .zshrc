@@ -1,6 +1,3 @@
-autoload -Uz promptinit
-promptinit
-prompt -s agnoster
 ## Options section
 setopt correct                                                  # Auto correct mistakes
 setopt extendedglob                                             # Extended globbing. Allows using regular expressions with *
@@ -13,7 +10,7 @@ setopt appendhistory                                            # Immediately ap
 setopt histignorealldups                                        # If a new command is a duplicate, remove the older one
 setopt autocd                                                   # if only directory path is entered, cd there.
 
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
+# zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
 zstyle ':completion:*' rehash true                              # automatically find new executables in path 
 # Speed up completions
@@ -57,7 +54,8 @@ bindkey '^[[Z' undo                                             # Shift+tab undo
 
 ## Alias section 
 alias cp="cp -i"                                                # Confirm before overwriting something
-alias la="ls -a"
+alias la="ls -A --colo=always"
+alias ls="ls --colo=always"
 alias ..="cd .."
 alias df='df -h'                                                # Human-readable sizes
 alias free='free -m'                                            # Show sizes in MB
@@ -76,7 +74,7 @@ setopt prompt_subst
 # Maia prompt
 # PROMPT="%B%{$fg[cyan]%}%(4~|%-1~/.../%2~|%~)%u%b >%{$fg[cyan]%}>%B%(?.%{$fg[cyan]%}.%{$fg[red]%})>%{$reset_color%}%b " # Print some system information when the shell is first started
 # Print a greeting message when shell is started
-echo $USER@$HOST  $(uname -srm) $(lsb_release -rcs)
+# echo $USER@$HOST  $(uname -srm) $(lsb_release -rcs)
 ## Prompt on right side:
 #  - shows status of git when in git repository (code adapted from https://techanic.net/2012/12/30/my_git_prompt_for_zsh.html)
 #  - shows exit status of previous command (if previous command finished with an error)
@@ -201,3 +199,26 @@ case $(basename "$(cat "/proc/$PPID/comm")") in
     ;;
 esac
 prompt_context(){}
+set -o vi
+
+
+#POWERLINE-SHELL
+
+function powerline_precmd() {
+    PS1="$(powerline-shell --shell zsh $?)"
+}
+
+function install_powerline_precmd() {
+  for s in "${precmd_functions[@]}"; do
+    if [ "$s" = "powerline_precmd" ]; then
+      return
+    fi
+  done
+  precmd_functions+=(powerline_precmd)
+}
+
+if [ "$TERM" != "linux" ]; then
+    install_powerline_precmd
+fi
+
+figlet -f slant .Hello.
