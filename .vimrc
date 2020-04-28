@@ -20,6 +20,9 @@ Plugin 'tpope/vim-surround' "surround plugin cs{( changes {} to ()
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
+" Plugin 'ap/vim-css-color' "Adds hex colors highlighting #00ff88 #ff0000
+Plugin 'chrisbra/Colorizer' "Adds hex colors highlighting #aaffaa #ffaa11
+
 Plugin 'justinmk/vim-sneak'
 Plugin 'tpope/vim-speeddating' "Fast adding and subtracting dates (i.e. press <C-a> or <C-x> on: 29 mar 2020)
 Plugin 'ryanoasis/vim-devicons' "Adds icons
@@ -42,8 +45,16 @@ filetype plugin indent on    " required
 "Syntax highlighting on
 syntax on
 
-"Airline theme setting
+"Initializations
+"---------------------------
+
 let g:airline_theme='dracula'
+:let g:colorizer_auto_color = 1
+:let g:colorizer_auto_filetype='css,html,lua,vim'
+:let g:ycm_autoclose_preview_window_after_completion=1
+"C# Autocomplete Omnisharp
+	"asynchronous server
+:let g:OmniSharp_server_stdio = 1
 
 "NerCommenter
 filetype plugin on
@@ -51,9 +62,6 @@ filetype plugin on
 "Autocomplete commands with menu
 set wildmenu
 
-"C# Autocomplete Omnisharp
-	"asynchronous server
-let g:OmniSharp_server_stdio = 1
 
 
 "Autocomplete YouCompleteMe - added python to blacklist due to Kite
@@ -72,8 +80,6 @@ let g:ycm_filetype_blacklist = {
       \ 'mail': 1
       \}
 
-let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 "Spliting
 set splitbelow
@@ -96,19 +102,20 @@ set autoindent
 
 "Lua specific settings
 au BufNewFile,BufRead *.lua
-    \ set tabstop=2
-    \ set shiftwidth=2
+    \ set tabstop=4
+    \ | set shiftwidth=4
 
 "Python specific settings
 au BufNewFile,BufRead *.py
     \ set tabstop=4
-"    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix 
-    \ set encoding=utf-8
+    \ | set softtabstop=4
+    \ | set shiftwidth=4
+    \ | set textwidth=79
+    \ | set expandtab
+    \ | set autoindent
+    \ | set fileformat=unix 
+    \ | set encoding=utf-8
+
 set completeopt+=noinsert
 
 "au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
@@ -120,9 +127,17 @@ let mapleader = ","
 " set clipboard=unnamed
 
 "MAPs and remaps
+"---------------------------
+
+"hex highlighting
+nmap <F2>           :ColorHighlight<CR>
+
+"YCM shortcuts
+nnoremap <leader>G  :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>g  :YcmCompleter GoToDefinition<CR>
 
     "auto-pairs
-    inoremap <C-'> ''<C-[>a
+inoremap <C-'> ''<C-[>a
 
     "copy and paste to system clipboard
 nnoremap <leader>p "+p
