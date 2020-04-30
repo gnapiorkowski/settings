@@ -54,6 +54,7 @@ bindkey '^[[Z' undo                                             # Shift+tab undo
 
 ## Alias section 
 alias cp="cp -i"                                                # Confirm before overwriting something
+alias kl="kubectl"
 alias la="ls -A --colo=always"
 alias ls="ls --colo=always"
 alias ..="cd .."
@@ -221,4 +222,6 @@ if [ "$TERM" != "linux" ]; then
     install_powerline_precmd
 fi
 
-figlet -f slant .Hello.
+figlet -f slant .Hello. | lolcat
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
