@@ -1,3 +1,6 @@
+set exrc "local .vimrc file to be used if available in pwd
+set secure
+
 set nocompatible              " required
 filetype off                  " required
 
@@ -9,33 +12,39 @@ Plugin 'gmarik/Vundle.vim' "Vundle plugin manager
 
 "Auto complete plugin for Cfamily etc Disabled for python due to Kite Bundle
 Bundle 'ycm-core/YouCompleteMe'
+Bundle 'OmniSharp/omnisharp-vim'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'dense-analysis/ale'
 
 Plugin 'vim-scripts/indentpython.vim' "Matches cloasely indents for python with PEP 8
-Plugin 'preservim/nerdcommenter' "fast comments (i.e. <leader>c<space> [un]comments a line)
-Plugin 'scrooloose/nerdtree' "adds tree like file browser (mapped to <leader><C-n>)
+
 Plugin 'tpope/vim-fugitive' "Git plugin for vim (i.e. :G, :Gstatus)
+
+"Navigation
+Plugin 'justinmk/vim-sneak'
 Plugin 'tpope/vim-surround' "surround plugin cs{( changes {} to ()
-" Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "needed for lightline
-" Plugin 'itchyny/lightline.vim' "cool status bar at the bottom
+Plugin 'scrooloose/nerdtree' "adds tree like file browser (mapped to <leader><C-n>)
+Plugin 'preservim/nerdcommenter' "fast comments (i.e. <leader>c<space> [un]comments a line)
+Plugin 'tpope/vim-speeddating' "Fast adding and subtracting dates (i.e. press <C-a> or <C-x> on: 29 mar 2020)
+" Plugin 'terryma/vim-multiple-cursors'
+
+Plugin 'jiangmiao/auto-pairs' "Auto close () {} etc
+Plugin 'ryanoasis/vim-devicons' "Adds icons
+" Plugin 'chrisbra/Colorizer' "Adds hex colors highlighting #aaffaa #ffaa11
+Plugin 'lilydjwg/colorizer'
+" Plugin 'ap/vim-css-color' "Adds hex colors highlighting #00ff88 #ff0000
+Plugin 'frazrepo/vim-rainbow' "brackets' color pairs (i.e. [[]] middle ones have different color than outer ones)
+
+Plugin 'Yggdroot/indentLine' "Adds vertical indents' lines
+Plugin 'kshenoy/vim-signature' "Displays marks on a bar on the left
+
+" Theming
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-
-" Plugin 'ap/vim-css-color' "Adds hex colors highlighting #00ff88 #ff0000
-Plugin 'chrisbra/Colorizer' "Adds hex colors highlighting #aaffaa #ffaa11
-
-Plugin 'justinmk/vim-sneak'
-Plugin 'tpope/vim-speeddating' "Fast adding and subtracting dates (i.e. press <C-a> or <C-x> on: 29 mar 2020)
-Plugin 'ryanoasis/vim-devicons' "Adds icons
-Plugin 'Yggdroot/indentLine' "Adds vertical indents' lines
-Plugin 'jiangmiao/auto-pairs' "Auto close () {} etc
-" Plugin 'terryma/vim-multiple-cursors'
-Plugin 'frazrepo/vim-rainbow' "brackets' color pairs (i.e. [[]] middle ones have different color than outer ones)
-Plugin 'kshenoy/vim-signature' "Displays marks on a bar on the left
+" Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "needed for lightline
+" Plugin 'itchyny/lightline.vim' "cool status bar at the bottom
 Plugin 'rafi/awesome-vim-colorschemes' "predefined colorschemes (i.e. :colo dracula)
-" C# - disabled because YouCompleteMe supports C# and OmniSharp doesn't appear
-" to be working
-" Bundle 'OmniSharp/omnisharp-vim'
-Plugin 'dense-analysis/ale'
+
 
 
 call vundle#end()            " required
@@ -89,6 +98,8 @@ set splitright
 set foldmethod=indent
 set foldlevel=99
 nnoremap <space> za
+
+colorscheme dracula
 
 "Enable lightline - cool bottom bar
 set laststatus=2
