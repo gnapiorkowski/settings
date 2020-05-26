@@ -106,10 +106,10 @@ awful.util.terminal = terminal
 awful.util.tagnames = { "main", "stuff", "mul", "com", "5" , "6", "7", "8", "9"}
 awful.layout.layouts = {
     awful.layout.suit.tile,
+    awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
-    awful.layout.suit.spiral,
+    -- awful.layout.suit.spiral,
     -- awful.layout.suit.floating,
-    -- awful.layout.suit.tile.left,
     -- awful.layout.suit.tile.top,
     -- awful.layout.suit.fair,
     -- awful.layout.suit.fair.horizontal,
@@ -278,14 +278,6 @@ root.buttons(my_table.join(
 
 -- {{{ Key bindings
 globalkeys = my_table.join(
-    -- Take a screenshot
-    -- https://github.com/lcpz/dots/blob/master/bin/screenshot
-    awful.key({ altkey }, "p", function() os.execute("screenshot") end,
-              {description = "take a screenshot", group = "hotkeys"}),
-
-    -- X screen locker
-    awful.key({ altkey, "Control" }, "l", function () os.execute(scrlocker) end,
-              {description = "lock screen", group = "hotkeys"}),
 
     -- Hotkeys
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
@@ -456,18 +448,27 @@ globalkeys = my_table.join(
 
 
     -- Widgets popups
-    awful.key({ altkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
+    awful.key({ modkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
               {description = "show calendar", group = "widgets"}),
-    awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
+    awful.key({ modkey, altkey }, "c", function () if beautiful.fs then beautiful.fs.show(7) end end,
               {description = "show filesystem", group = "widgets"}),
-    awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
-              {description = "show weather", group = "widgets"}),
+    -- awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
+              -- {description = "show weather", group = "widgets"}),
 
     -- Brightness
     awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 10") end,
               {description = "+10%", group = "hotkeys"}),
     awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
               {description = "-10%", group = "hotkeys"}),
+
+    -- Shutdown
+    -- https://github.com/lcpz/dots/blob/master/bin/screenshot
+    awful.key({  }, "XF86PowerDwon", function() os.execute(scrlocker) end,
+              {description = "poweroff", group = "hotkeys"}),
+
+    -- X screen locker
+    awful.key({ altkey, "Control" }, "l", function () os.execute(scrlocker) end,
+              {description = "lock screen", group = "hotkeys"}),
 
     -- ALSA volume control
     awful.key({  }, "XF86AudioRaiseVolume",
@@ -531,7 +532,7 @@ globalkeys = my_table.join(
               {description = "run browser", group = "launcher"}),
     awful.key({ modkey }, "a", function () awful.spawn(gui_editor) end,
               {description = "run gui editor", group = "launcher"}),
-      awful.key({  }, "XF86Tools", function () awful.spawn("pavucontrol") end,
+      awful.key({  }, "XF86Tools", function () awful.spawn.with_shell("audio-dev-switch") end,
               {description = "launch pavucontrol", group = "launcher"}),
       awful.key({  }, "XF86Search", function () awful.spawn(terminal .. (string.match(terminal, "alacritty") and " -e htop" or " htop")) end,
               {description = "launch htop", group = "launcher"}),
@@ -713,6 +714,12 @@ awful.rules.rules = {
     -- { rule = { class = "firefox" },
       -- properties = { screen = 1, tag = awful.util.tagnames[1] } },
 
+    -- { rule = { class = "Blender" },
+      -- properties = { opacity = 1 } },
+      
+    -- { rule = { class = "Ristretto" },
+      -- properties = { opacity = 1 } },
+
     { rule = { class = "Gimp", role = "gimp-image-window" },
           properties = { maximized = true } },
 
@@ -743,6 +750,10 @@ client.connect_signal("unfocus", function(c)
 	c.border_color = beautiful.border_normal
 	if c.name then
 		if not (string.find(c.name, "Netflix") or string.find(c.name, "YouTube")) then
+			c.opacity = 0.90
+		end
+	elseif c.class then
+		if not (string.find(c.class, "Ristretto") or string.find(c.class, "Blender")) then
 			c.opacity = 0.90
 		end
 	else

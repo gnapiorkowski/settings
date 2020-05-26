@@ -19,7 +19,7 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 HISTFILE=~/.zhistory
 HISTSIZE=1000
-SAVEHIST=500
+SAVEHIST=1000
 export EDITOR=/usr/bin/vim
 export VISUAL=/usr/bin/vim
 WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
@@ -54,7 +54,6 @@ bindkey '^[[Z' undo                                             # Shift+tab undo
 
 ## Alias section 
 alias cp="cp -i"                                                # Confirm before overwriting something
-alias kl="kubectl"
 alias la="ls -A --colo=always"
 alias ls="ls --colo=always"
 alias ..="cd .."
@@ -62,6 +61,8 @@ alias df='df -h'                                                # Human-readable
 alias free='free -m'                                            # Show sizes in MB
 alias gitu='git add . && git commit && git push'
 alias grep='grep --color'
+alias kl="kubectl"
+alias susys="sudo systemctl"
 
 # Theming section  
 autoload -U compinit colors zcalc

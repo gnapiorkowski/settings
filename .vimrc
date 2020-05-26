@@ -88,6 +88,7 @@ let g:ycm_filetype_blacklist = {
       \ 'leaderf': 1,
       \ 'mail': 1
       \}
+let g:ycm_key_list_stop_completion = ['<C-y>', '<CR>']
 
 
 "Spliting
@@ -139,6 +140,7 @@ let mapleader = ","
 
 "MAPs and remaps
 "---------------------------
+"Normal mode Mappings
 
 "hex highlighting
 nmap <F2>           :ColorHighlight<CR>
@@ -147,8 +149,6 @@ nmap <F2>           :ColorHighlight<CR>
 nnoremap <leader>G  :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>g  :YcmCompleter GoToDefinition<CR>
 
-    "auto-pairs
-inoremap <C-'> ''<C-[>a
 
     "copy and paste to system clipboard
 nnoremap <leader>p "+p
@@ -162,6 +162,8 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
     "tabs
+nnoremap <A-j> :ALEDetails
+nnoremap <A-l> :tabprevious
 nnoremap <C-t>n :tabnew<CR>
 nnoremap <C-t>N <C-w>T
 nnoremap <C-t>q :tabc<CR>
@@ -170,16 +172,29 @@ nnoremap <C-t>o :tabo<CR>
 nnoremap <C-t>r :tabdo
 
     "Diff
-:map <leader>1 :diffget 1<CR>
-:map <leader>2 :diffget 2<CR>
-:map <leader>3 :diffget 3<CR>
-:map <leader>4 :diffget 4<CR>
-    
+map <leader>1 :diffget 1<CR>
+map <leader>2 :diffget 2<CR>
+map <leader>3 :diffget 3<CR>
+map <leader>4 :diffget 4<CR>
+
     "very magic search
-map <leader>/ /\v
+map <leader>v/ /\v
+map <leader>v/ /\v
     
     "NERD Tree
 nnoremap <leader><C-n> :NERDTreeToggle<CR>
+
+"---------------------------
+"Visual Mode Mappings
+vnoremap g/ y/<C-R>"<CR>
+
+"---------------------------
+"Insert mode Mappings
+    "auto-pairs
+inoremap <C-l> <C-[>la
+inoremap <C-h> <C-[>ha
+inoremap <C-k> <C-[>ka
+inoremap <C-j> <C-[>ja
 
 
 "Disable auto comments (after newline etc)

@@ -42,5 +42,4 @@ run msm_notifier
 run firewall-applet
 run pa-applet
 run yakuake
-run kdeconnect-app
 run kdeconnect-indicator
