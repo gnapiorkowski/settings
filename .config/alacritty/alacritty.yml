@@ -601,7 +601,6 @@ key_bindings:
   - { key: Add,      mods: Control,       action: ReceiveChar      }
   - { key: Subtract, mods: Control,       action: ReceiveChar      }
   - { key: Minus,    mods: Control,       action: ReceiveChar      }
-  - { key: J,         mods: Alt,          chars: "\x1bj"           }
 
   #- { key: Paste,                    action: Paste                            }
   #- { key: Copy,                     action: Copy                             }

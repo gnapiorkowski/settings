@@ -1,52 +1,46 @@
-set exrc "local .vimrc file to be used if available in pwd
-set secure
+" Specify a directory for plugins
+" - For Neovim: stdpath('data') . '/plugged'
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
 
-set nocompatible              " required
-filetype off                  " required
+Plug 'ycm-core/YouCompleteMe'
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'neoclide/coc.nvim', {'branch': 'release'} "Used for flutter
+Plug 'OmniSharp/omnisharp-vim'
+Plug 'vim-syntastic/syntastic'
+Plug 'dense-analysis/ale'
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+Plug 'vim-scripts/indentpython.vim' "Matches cloasely indents for python with PEP 8
 
-Plugin 'gmarik/Vundle.vim' "Vundle plugin manager
-
-Bundle 'ycm-core/YouCompleteMe'
-Bundle 'OmniSharp/omnisharp-vim'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'dense-analysis/ale'
-
-Plugin 'vim-scripts/indentpython.vim' "Matches cloasely indents for python with PEP 8
-
-Plugin 'tpope/vim-fugitive' "Git plugin for vim (i.e. :G, :Gstatus)
+Plug 'tpope/vim-fugitive' "Git plugin for vim (i.e. :G, :Gstatus)
 
 "Navigation
-Plugin 'justinmk/vim-sneak'
-Plugin 'tpope/vim-surround' "surround plugin cs{( changes {} to ()
-Plugin 'scrooloose/nerdtree' "adds tree like file browser (mapped to <leader><C-n>)
-Plugin 'preservim/nerdcommenter' "fast comments (i.e. <leader>c<space> [un]comments a line)
-Plugin 'tpope/vim-speeddating' "Fast adding and subtracting dates (i.e. press <C-a> or <C-x> on: 29 mar 2020)
-" Plugin 'terryma/vim-multiple-cursors'
+Plug 'justinmk/vim-sneak'
+Plug 'tpope/vim-surround' "surround plugin cs{( changes {} to ()
+Plug 'scrooloose/nerdtree' "adds tree like file browser (mapped to <leader><C-n>)
+Plug 'preservim/nerdcommenter' "fast comments (i.e. <leader>c<space> [un]comments a line)
+Plug 'tpope/vim-speeddating' "Fast adding and subtracting dates (i.e. press <C-a> or <C-x> on: 29 mar 2020)
+" Plug 'terryma/vim-multiple-cursors'
 
-Plugin 'jiangmiao/auto-pairs' "Auto close () {} etc
-Plugin 'ryanoasis/vim-devicons' "Adds icons
-" Plugin 'chrisbra/Colorizer' "Adds hex colors highlighting #aaffaa #ffaa11
-Plugin 'lilydjwg/colorizer'
-" Plugin 'ap/vim-css-color' "Adds hex colors highlighting #00ff88 #ff0000
-Plugin 'frazrepo/vim-rainbow' "brackets' color pairs (i.e. [[]] middle ones have different color than outer ones)
+Plug 'jiangmiao/auto-pairs' "Auto close () {} etc
+Plug 'ryanoasis/vim-devicons' "Adds icons
+" Plug 'chrisbra/Colorizer' "Adds hex colors highlighting #aaffaa #ffaa11
+Plug 'lilydjwg/colorizer'
+" Plug 'ap/vim-css-color' "Adds hex colors highlighting #00ff88 #ff0000
+Plug 'frazrepo/vim-rainbow' "brackets' color pairs (i.e. [[]] middle ones have different color than outer ones)
 
-Plugin 'Yggdroot/indentLine' "Adds vertical indents' lines
-Plugin 'kshenoy/vim-signature' "Displays marks on a bar on the left
+Plug 'Yggdroot/indentLine' "Adds vertical indents' lines
+Plug 'kshenoy/vim-signature' "Displays marks on a bar on the left
 
 " Theming
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-" Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "needed for lightline
-" Plugin 'itchyny/lightline.vim' "cool status bar at the bottom
-Plugin 'rafi/awesome-vim-colorschemes' "predefined colorschemes (i.e. :colo dracula)
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "needed for lightline
+" Plug 'itchyny/lightline.vim' "cool status bar at the bottom
+Plug 'rafi/awesome-vim-colorschemes' "predefined colorschemes (i.e. :colo dracula)
 
+call plug#end()
 
-
-call vundle#end()            " required
 
 filetype plugin indent on    " required
 
@@ -97,6 +91,22 @@ colorscheme dracula
 "Enable lightline - cool bottom bar
 set laststatus=2
 "set noshowmode
+
+"Autocomplete YouCompleteMe - added python to blacklist due to Kite
+let g:ycm_filetype_blacklist = {
+      \ 'dart': 1,
+      \ 'tagbar': 1,
+      \ 'notes': 1,
+      \ 'markdown': 1,
+      \ 'netrw': 1,
+      \ 'unite': 1,
+      \ 'text': 1,
+      \ 'vimwiki': 1,
+      \ 'pandoc': 1,
+      \ 'infolog': 1,
+      \ 'leaderf': 1,
+      \ 'mail': 1
+      \}
 
 "Tabstops for all
 set expandtab
@@ -194,6 +204,19 @@ inoremap <C-j> <C-[>ja
 "Disable auto comments (after newline etc)
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
+"Coc settings
+    "use K to show documentation
+nnoremap <silent> <leader>gd :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+
 "NERD commenter
     " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -217,4 +240,3 @@ let g:NERDSpaceDelims = 1
 "----> Alacrity mouse fix
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 set mouse=a
-set ttymouse=sgr
