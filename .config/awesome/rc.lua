@@ -194,6 +194,9 @@ lain.layout.cascade.tile.ncol          = 2
 
 beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme))
 beautiful.icon_theme        = "Papirus-Dark"
+-- beautiful.notification_max_height = 100
+-- beautiful.notification_max_width = 500
+beautiful.notification_icon_size = 100
 -- }}}
 
 
@@ -532,8 +535,8 @@ globalkeys = my_table.join(
               {description = "run browser", group = "launcher"}),
     awful.key({ modkey }, "a", function () awful.spawn(gui_editor) end,
               {description = "run gui editor", group = "launcher"}),
-      awful.key({  }, "XF86Tools", function () awful.spawn.with_shell("audio-dev-switch") end,
-              {description = "launch pavucontrol", group = "launcher"}),
+      awful.key({ modkey }, "/", function () awful.spawn.with_shell("audio-dev-switch") end,
+              {description = "switch autio soruce", group = "launcher"}),
       awful.key({  }, "XF86Search", function () awful.spawn(terminal .. (string.match(terminal, "alacritty") and " -e htop" or " htop")) end,
               {description = "launch htop", group = "launcher"}),
       awful.key({  }, "XF86Calculator", function () awful.spawn("galculator") end,
@@ -727,22 +730,25 @@ awful.rules.rules = {
           properties = { floating = true, above = true } },
 
     { rule = { class = "Spotify" },
-      properties = { screen = 2, tag = awful.util.tagnames[3], swtichtotag = true} },
+      properties = { screen = 1, tag = awful.util.tagnames[3], swtichtotag = true} },
+
+    { rule = { class = "Signal" },
+      properties = { screen = 1, tag = awful.util.tagnames[4], swtichtotag = true} },
 
     { rule = { class = "[Dd]iscord" },
-      properties = { screen = 2, tag = awful.util.tagnames[4], swtichtotag = true} },
+      properties = { screen = 1, tag = awful.util.tagnames[4], swtichtotag = true} },
 
-    { rule = { class = "yakuake" },
-      properties = { floating = true } },
+    { rule = { name = "Emulator" }, --- affects android-emulator
+      properties = { floating = true, above = true} },
 }
 -- }}}
 
 -- {{{ Transparency
 -- This defines transparency for unfocused and focused windows
 client.connect_signal("focus", function(c)
-	-- naughty.notify({ preset = naughty.config.presets.critical,
-			-- title = c.class,
-			-- text = c.name })
+    -- naughty.notify({ preset = naughty.config.presets.critical,
+            -- title = c.class,
+            -- text = c.name })
 	c.border_color = beautiful.border_focus
 	c.opacity = 1
 end)
@@ -840,4 +846,5 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 
 -- AUTORUN autostart autorun
-awful.spawn.with_shell("~/.config/awesome/autorun.sh")
+-- awful.spawn.with_shell("~/.config/awesome/autorun.sh")
+awful.spawn.with_shell("~/.config/awesome/autostart.sh")

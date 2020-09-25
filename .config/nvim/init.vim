@@ -1,14 +1,14 @@
 " Specify a directory for plugins
-" - For Neovim: stdpath('data') . '/plugged'
+" -or Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
-Plug 'ycm-core/YouCompleteMe'
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'neoclide/coc.nvim', {'branch': 'release'} "Used for flutter
-Plug 'OmniSharp/omnisharp-vim'
-Plug 'vim-syntastic/syntastic'
-Plug 'dense-analysis/ale'
+" Plug 'OmniSharp/omnisharp-vim'
+" Plug 'dense-analysis/ale'
+" Plug 'vim-syntastic/syntastic'
+Plug 'mattn/emmet-vim' "HTML unraveling i.e. type html:5,, or div>a>p,,
 
 Plug 'vim-scripts/indentpython.vim' "Matches cloasely indents for python with PEP 8
 
@@ -38,6 +38,7 @@ Plug 'vim-airline/vim-airline-themes'
 " Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "needed for lightline
 " Plug 'itchyny/lightline.vim' "cool status bar at the bottom
 Plug 'rafi/awesome-vim-colorschemes' "predefined colorschemes (i.e. :colo dracula)
+Plug 'dracula/vim'
 
 call plug#end()
 
@@ -55,7 +56,7 @@ let g:colorizer_auto_color = 1
 let g:colorizer_auto_filetype='css,html,lua,vim'
 "C# Autocomplete Omnisharp
 	"asynchronous server
-let g:OmniSharp_server_stdio = 1
+" let g:OmniSharp_server_stdio = 1
 
 "NerCommenter
 filetype plugin on
@@ -63,18 +64,6 @@ filetype plugin on
 "Autocomplete commands with menu
 set wildmenu
 
-
-
-" let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_add_preview_to_completeopt = 1
-let g:ycm_auto_hover = 'CursorHold'
-" augroup MyYCMCustom
-  " autocmd!
-  " autocmd FileType c,cpp let b:ycm_hover = {
-    " \ 'command': 'GetDoc',
-    " \ 'syntax': &filetype
-    " \ }
-" augroup END
 
 
 "Spliting
@@ -92,22 +81,6 @@ colorscheme dracula
 set laststatus=2
 "set noshowmode
 
-"Autocomplete YouCompleteMe - added python to blacklist due to Kite
-let g:ycm_filetype_blacklist = {
-      \ 'dart': 1,
-      \ 'tagbar': 1,
-      \ 'notes': 1,
-      \ 'markdown': 1,
-      \ 'netrw': 1,
-      \ 'unite': 1,
-      \ 'text': 1,
-      \ 'vimwiki': 1,
-      \ 'pandoc': 1,
-      \ 'infolog': 1,
-      \ 'leaderf': 1,
-      \ 'mail': 1
-      \}
-
 "Tabstops for all
 set expandtab
 set tabstop=4
@@ -118,6 +91,16 @@ set autoindent
 au BufNewFile,BufRead *.lua
     \ set tabstop=4
     \ | set shiftwidth=4
+
+"HTML specific settings
+au BufNewFile,BufRead *.html
+    \ set tabstop=2
+    \ | set shiftwidth=2
+
+"CSS specific settings
+au BufNewFile,BufRead *.css
+    \ set tabstop=2
+    \ | set shiftwidth=2
 
 "Python specific settings
 au BufNewFile,BufRead *.py
@@ -137,19 +120,21 @@ set relativenumber
 set number
 
 let mapleader = ","
+let g:user_emmet_leader_key=','
 " set clipboard=unnamed
 
 "MAPs and remaps
 "---------------------------
 "Normal mode Mappings
 
+"Tab to cycle completions for coc
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+
 "hex highlighting
 nmap <F2>           :ColorHighlight<CR>
-
-"YCM shortcuts
-nnoremap <leader>G  :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>g  :YcmCompleter GoToDefinition<CR>
-nmap <leader>D <plug>(YCMHover)
 
     "copy and paste to system clipboard
 nnoremap <leader>p "+p
@@ -183,7 +168,6 @@ map <leader>4 :diffget 4<CR>
 
     "very magic search
 map <leader>v/ /\v
-map <leader>v/ /\v
     
     "NERD Tree
 nnoremap <leader><C-n> :NERDTreeToggle<CR>
@@ -195,10 +179,13 @@ vnoremap g/ y/<C-R>"<CR>
 "---------------------------
 "Insert mode Mappings
     "auto-pairs
-inoremap <C-l> <C-[>la
-inoremap <C-h> <C-[>ha
-inoremap <C-k> <C-[>ka
-inoremap <C-j> <C-[>ja
+noremap! <C-l> <right>
+noremap! <C-H> <left>
+noremap! <C-k> <up>
+noremap! <C-j> <down>
+inoremap <Leader>w <esc>lwi
+inoremap <Leader>e <esc>lea
+inoremap <Leader>b <esc>lbi
 
 
 "Disable auto comments (after newline etc)

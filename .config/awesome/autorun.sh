@@ -23,9 +23,9 @@ fi
 
 run xfsettingsd
 run nm-applet
-run light-locker
+run "light-locker"
 run xcape -e 'Super_L=Super_L|Control_L|Escape'
-run thunar --daemon
+run "thunar --daemon"
 run pa-applet
 run pamac-tray
 
@@ -38,8 +38,10 @@ fi
 
 # run compton --vsync opengl-swc --shadow-exclude '!focused'
 run picom --experimental-backends
+# run picom
 run msm_notifier
 run firewall-applet
 run pa-applet
-run yakuake
 run kdeconnect-indicator
+run polychromatic-tray-applet
+run setxkbmap -option caps:swapescape
