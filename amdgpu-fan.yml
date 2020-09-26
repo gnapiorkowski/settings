@@ -1,0 +1,13 @@
+#Fan Control Matrix. [<Temp in C>,<Fanspeed in %>]
+speed_matrix:
+- [0, 0]
+- [30, 20]
+- [60, 20]
+- [70, 45]
+- [80, 50]
+- [90, 80]
+- [95, 100]
+
+# optional
+# cards:  # can be any card returned from `ls /sys/class/drm | grep "^card[[:digit:]]$"`
+# - card0
