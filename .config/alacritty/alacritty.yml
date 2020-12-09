@@ -598,10 +598,8 @@ key_bindings:
   - { key: PageUp,   mods: Control|Shift, action: IncreaseFontSize }
   - { key: PageDown, mods: Control|Shift, action: DecreaseFontSize }
   - { key: Equals,   mods: Control,       action: ReceiveChar      }
-  - { key: Add,      mods: Control,       action: ReceiveChar      }
-  - { key: Subtract, mods: Control,       action: ReceiveChar      }
+  - { key: Plus,     mods: Control,       action: ReceiveChar      }
   - { key: Minus,    mods: Control,       action: ReceiveChar      }
-  - { key: J,         mods: Alt,          chars: "\x1bj"           }
 
   #- { key: Paste,                    action: Paste                            }
   #- { key: Copy,                     action: Copy                             }

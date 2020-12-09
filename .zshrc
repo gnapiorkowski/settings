@@ -53,15 +53,18 @@ bindkey '^H' backward-kill-word                                 # delete previou
 bindkey '^[[Z' undo                                             # Shift+tab undo last action
 
 ## Alias section 
-alias cp="cp -i"                                                # Confirm before overwriting something
-alias la="ls -A --colo=always"
-alias ls="ls --colo=always"
+alias cp="cp -i"                                               # Confirm before overwriting something
+alias la="ls -Ah --colo=always"
+alias ls="ls -h --colo=always"
+alias ll="ls -lAh --colo=always"
 alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
 alias df='df -h'                                                # Human-readable sizes
 alias free='free -m'                                            # Show sizes in MB
 alias gitu='git add . && git commit && git push'
 alias grep='grep --color'
-alias kl="kubectl"
 alias susys="sudo systemctl"
 
 # Theming section  
@@ -226,3 +229,7 @@ fi
 figlet -f slant .Hello. | lolcat
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+gl () {
+    g++ "$1" -I/usr/include/freetype2 -lglut -lGL -lGLU -lGLEW -lfreetype
+}

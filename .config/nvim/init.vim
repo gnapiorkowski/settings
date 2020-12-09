@@ -4,11 +4,13 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'dart-lang/dart-vim-plugin'
+Plug 'tikhomirov/vim-glsl'
 Plug 'neoclide/coc.nvim', {'branch': 'release'} "Used for flutter
 " Plug 'OmniSharp/omnisharp-vim'
 " Plug 'dense-analysis/ale'
-" Plug 'vim-syntastic/syntastic'
+Plug 'vim-syntastic/syntastic'
 Plug 'mattn/emmet-vim' "HTML unraveling i.e. type html:5,, or div>a>p,,
+Plug 'lervag/vimtex' "LaTex plugin
 
 Plug 'vim-scripts/indentpython.vim' "Matches cloasely indents for python with PEP 8
 
@@ -37,8 +39,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "needed for lightline
 " Plug 'itchyny/lightline.vim' "cool status bar at the bottom
-Plug 'rafi/awesome-vim-colorschemes' "predefined colorschemes (i.e. :colo dracula)
-Plug 'dracula/vim'
+" Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'rafi/awesome-vim-colorschemes'
 
 call plug#end()
 
@@ -54,9 +56,16 @@ syntax on
 let g:airline_theme='dracula'
 let g:colorizer_auto_color = 1
 let g:colorizer_auto_filetype='css,html,lua,vim'
-"C# Autocomplete Omnisharp
-	"asynchronous server
-" let g:OmniSharp_server_stdio = 1
+
+colorscheme dracula
+
+"C++ linting via syntastic and cpplint
+let g:syntastic_cpp_checkers = ['cpplint']
+let g:syntastic_c_checkers = ['cpplint']
+let g:syntastic_cpp_cpplint_exec = 'cpplint'
+" The following two lines are optional. Configure it to your liking!
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
 
 "NerCommenter
 filetype plugin on
@@ -75,7 +84,6 @@ set foldmethod=indent
 set foldlevel=99
 nnoremap <space> za
 
-colorscheme dracula
 
 "Enable lightline - cool bottom bar
 set laststatus=2

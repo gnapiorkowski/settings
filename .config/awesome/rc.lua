@@ -99,20 +99,23 @@ local editor       = os.getenv("EDITOR") or "vim"
 local gui_editor   = os.getenv("GUI_EDITOR") or "gvim" or "code"
 local browser      = os.getenv("BROWSER") or "firefox"
 local file_manager  = os.getenv("FILE_MANAGER") or "thunar"
+local multimedia_tag = "mul"
+local communication_tag = "com"
+local last_tag = "last"
 
 local scrlocker    = "slock"
 
 awful.util.terminal = terminal
-awful.util.tagnames = { "main", "stuff", "mul", "com", "5" , "6", "7", "8", "9"}
+awful.util.tagnames = { }
 awful.layout.layouts = {
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
+    -- awful.layout.suit.tile.bottom,
+    awful.layout.suit.tile.top,
     -- awful.layout.suit.spiral,
     -- awful.layout.suit.floating,
-    -- awful.layout.suit.tile.top,
     -- awful.layout.suit.fair,
-    -- awful.layout.suit.fair.horizontal,
+    awful.layout.suit.fair.horizontal,
     -- awful.layout.suit.spiral.dwindle,
     -- awful.layout.suit.max,
     -- awful.layout.suit.max.fullscreen,
@@ -240,7 +243,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- }}}
 
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock("%H:%M ")
+mytextclock = wibox.widget.textclock("%a | %e %b %Y | %H:%M")
 
 -- {{{ Screen
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
@@ -248,11 +251,18 @@ screen.connect_signal("property::geometry", function(s)
     -- Wallpaper
     if beautiful.wallpaper then
         local wallpaper = beautiful.wallpaper
+        local wallpaper2 = beautiful.wallpaper2
         -- If wallpaper is a function, call it with the screen
         if type(wallpaper) == "function" then
             wallpaper = wallpaper(s)
         end
-        gears.wallpaper.maximized(wallpaper, s, true)
+        if s.index == 1 then
+            gears.wallpaper.centered(wallpaper, s, "#000000", 0.46875)
+        elseif s.index == 2 then
+            gears.wallpaper.centered(wallpaper2, s, "#000000", 1)
+        else
+            gears.wallpaper.centered(wallpaper, s, "#000000", 0.46875)
+        end
     end
 end)
 
@@ -268,7 +278,16 @@ screen.connect_signal("arrange", function (s)
     end
 end)
 -- Create a wibox for each screen and add it
-awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
+awful.screen.connect_for_each_screen(function(s)
+    beautiful.at_screen_connect(s)
+    if s.index == 1 then
+        awful.tag({ "main", "stuff", multimedia_tag, communication_tag, "5" , "6", "7", "8", "9" }, s, awful.layout.layouts[2])
+    elseif s.index == 2 then
+        awful.tag({ "main", "stuff", multimedia_tag, communication_tag, "5" , "6", "7", "8", "9" }, s, awful.layout.layouts[2])
+    else
+        awful.tag({ "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" }, s, awful.layout.layouts[3])
+    end
+end)
 -- }}}
 
 -- {{{ Mouse bindings
@@ -387,7 +406,7 @@ globalkeys = my_table.join(
         {description = "toggle wibox", group = "awesome"}),
 
     -- On the fly useless gaps change
-    awful.key({ altkey, "Control" }, "+", function () lain.util.useless_gaps_resize(1) end,
+    awful.key({ altkey, "Control" }, "=", function () lain.util.useless_gaps_resize(1) end,
               {description = "increment useless gaps", group = "tag"}),
     awful.key({ altkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-1) end,
               {description = "decrement useless gaps", group = "tag"}),
@@ -441,11 +460,11 @@ globalkeys = my_table.join(
 --SCREENSHOTS
     awful.key({              }, "Print", function () awful.spawn.with_shell("sleep 0.1 && flameshot gui")   end,
               {description = "Take a flameshot", group = "screenshot"}),
-    awful.key({"Control"     }, "Print", function () awful.spawn.with_shell("sleep 0.1 && flameshot screen")   end,
+    awful.key({"Control"     }, "Print", function () awful.spawn.with_shell("sleep 0.1 && flameshot screen -c")   end,
               {description = "Take a flameshot of the screen", group = "screenshot"}),
     awful.key({"Shift", "Control" }, "Print", function () awful.spawn.with_shell("sleep 0.1 && flameshot config")   end,
               {description = "Configure flameshot", group = "screenshot"}),
-    awful.key({"Shift"            }, "Print", function () awful.spawn.with_shell("sleep 0.1 && flameshot full")   end,
+    awful.key({"Shift"            }, "Print", function () awful.spawn.with_shell("sleep 0.1 && flameshot full -c")   end,
               {description = "Take a flameshot of all", group = "screenshot"}),
 
 
@@ -456,7 +475,7 @@ globalkeys = my_table.join(
     awful.key({ modkey, altkey }, "c", function () if beautiful.fs then beautiful.fs.show(7) end end,
               {description = "show filesystem", group = "widgets"}),
     -- awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
-              -- {description = "show weather", group = "widgets"}),
+              -- {description = "show weather", group = "widgets",
 
     -- Brightness
     awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 10") end,
@@ -597,8 +616,12 @@ clientkeys = my_table.join(
               {description = "toggle floating", group = "client"}),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
-    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
-              {description = "move to screen", group = "client"}),
+    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen(1)               end,
+              {description = "move to screen 1", group = "client"}),
+    awful.key({ modkey,           }, "i",      function (c) c:move_to_screen(2)               end,
+              {description = "move to screen 2", group = "client"}),
+    awful.key({ modkey,           }, "p",      function (c) c:move_to_screen(3)               end,
+              {description = "move to screen 3", group = "client"}),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
               {description = "toggle keep on top", group = "client"}),
     awful.key({ modkey,           }, "n",
@@ -723,20 +746,23 @@ awful.rules.rules = {
     -- { rule = { class = "Ristretto" },
       -- properties = { opacity = 1 } },
 
-    { rule = { class = "Gimp", role = "gimp-image-window" },
-          properties = { maximized = true } },
+    -- { rule = { class = "Gimp", role = "gimp-image-window" },
+          -- properties = { maximized = true } },
 
     { rule = { class = "Galculator"},
-          properties = { floating = true, above = true } },
+          properties = { floating = true, above = true, titlebars_enabled=true } },
 
     { rule = { class = "Spotify" },
-      properties = { screen = 1, tag = awful.util.tagnames[3], swtichtotag = true} },
+      properties = {  screen = 2,tag = multimedia_tag, swtichtotag = true} },
 
     { rule = { class = "Signal" },
-      properties = { screen = 1, tag = awful.util.tagnames[4], swtichtotag = true} },
+      properties = { screen = 2, tag = communication_tag, swtichtotag = true} },
+
+    { rule = { name = "instaBot" },
+      properties = { screen = 2, tag = "9", swtichtotag = true} },
 
     { rule = { class = "[Dd]iscord" },
-      properties = { screen = 1, tag = awful.util.tagnames[4], swtichtotag = true} },
+      properties = { screen = 2, tag = communication_tag, swtichtotag = true} },
 
     { rule = { name = "Emulator" }, --- affects android-emulator
       properties = { floating = true, above = true} },

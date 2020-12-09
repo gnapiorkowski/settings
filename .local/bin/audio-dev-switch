@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+import subprocess
+# Toggle default device to the next device (wrap around the list)
+cards_info = subprocess.run(['pacmd','list-sinks'], stdout=subprocess.PIPE)
+card_indexes = subprocess.run(['grep', 'index'], stdout=subprocess.PIPE, input=cards_info.stdout)
+indexes_list = card_indexes.stdout.decode().splitlines()
+card_descriptions = subprocess.run(['grep', 'device.description'], stdout=subprocess.PIPE, input=cards_info.stdout)
+indices = [i for i, s in enumerate(indexes_list) if '*' in s]
+if (len(indices) != 1):
+    print("Error finding default device")
+    exit(1)
+default_index = indices[0]
+next_default = 0
+if (default_index != (len(indexes_list) - 1)):
+    next_default = default_index + 1
+next_default_index =  (indexes_list[next_default].split("index: ",1)[1])
+subprocess.run(['pacmd','set-default-sink %s' %(next_default_index)], stdout=subprocess.PIPE)
+
+# Move all existing applications to the new default device
+inputs_info = subprocess.run(['pacmd','list-sink-inputs'], stdout=subprocess.PIPE)
+inputs_indexes = subprocess.run(['grep', 'index'], stdout=subprocess.PIPE, input=inputs_info.stdout)
+inputs_indexes_list = inputs_indexes.stdout.decode().splitlines()
+for line in inputs_indexes_list:
+    input_index =  (line.split("index: ",1)[1])
+    subprocess.run(['pacmd','move-sink-input %s %s' %(input_index, next_default_index)], stdout=subprocess.PIPE)
+
+# Send notification to the GUI
+descriptions_list = card_descriptions.stdout.decode().splitlines()
+if (len(descriptions_list) == len(indexes_list)):
+    description =  (descriptions_list[next_default].split("= ",1)[1])[1:-1]
+    args = ["notify-send", "Default audio card changed", 'Default audio card was set to %s' %(description)]
+    subprocess.run(args, stdout=subprocess.PIPE)
