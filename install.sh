@@ -66,10 +66,11 @@ esac
 if [ "$fasd" = true ] ; then
     cat fasd.txt >> /home/$USER/.zshrc
     echo""
-    read -r -p "Do you want to install [0m[01;34mfasd[0m with pacman? [y/N/x(exit)]: " input
+    read -r -p "Do you want to install [0m[01;34mfasd[0m with pacman? (requires sudo) [y/N/x(exit)]: " input
 
     case $input in
             [yY][eE][sS]|[yY])
+            sudo pacman -S fasd
         ;;
             [xX])
         exit 1
