@@ -24,15 +24,17 @@ local function factory(args)
         -- helpers.async({ 'sensors | grep -E "\\+[0-9]*.[0-9]°C[ ]"' }, function(f)
         helpers.async({ 'sensors'}, function(f)
             local temp_value
-	    for t in f:gmatch("temp1:%s*+[0-9][0-9]") do
+        for t in f:gmatch("edge:%s*+[0-9][0-9]") do
+		-- for t in f:gmatch("(edge:.*?)(\d{2}.*?C)") do
 		    -- temp_value = t:gsub("\n", "")
 		    temp_value = t
 	    end
-	    for t in f:gmatch("Tctl:%s*+[0-9][0-9]") do
+        for t in f:gmatch("Tctl:%s*+[0-9][0-9]") do
+		-- for t in f:gmatch("(Tctl:.*?)(\d{2}.*?C)") do
 		    temp_value = temp_value .. t
 	    end
             -- coretemp_now = temp_now[tempfile] or "N/A"
-	    coretemp_now = temp_value:gsub("%s", ""):gsub("+", ""):gsub("Tctl:", "°C "):gsub("temp1:","")
+	    coretemp_now = temp_value:gsub("%s", ""):gsub("+", ""):gsub("Tctl:", "°C "):gsub("edge:","")
             widget = temp.widget
             settings()
         end)
