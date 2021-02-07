@@ -548,6 +548,8 @@ globalkeys = my_table.join(
     -- User programs
     awful.key({ modkey }, "b", function () awful.spawn(browser) end,
               {description = "run browser", group = "launcher"}),
+    awful.key({ modkey }, "v", function () awful.spawn("pavucontrol") end,
+              {description = "run pavucontrol", group = "launcher"}),
     awful.key({ modkey }, "e", function () awful.spawn.with_shell(terminal .. (string.match(terminal, "alacritty") and " -e vifm" or " vifm")) end,
 	      {description = "launch vifm", group = "launcher"}),
     awful.key({ modkey, "Shift" }, "e", function () awful.spawn(file_manager) end,
