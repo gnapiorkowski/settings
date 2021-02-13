@@ -5,6 +5,8 @@
 fasd=false
 fasd_install=false
 
+echo "Starting window"
+
 cmd=(dialog --separate-output --checklist "Select options:" 22 76 16)
 options=(
          1 "replace your /home/$USER/files with these config files" off
@@ -34,7 +36,7 @@ do
             ;;
         2)
             echo ""
-            echo "Copying [0m[01;34mzsh plugins[0m to /usr/share/zsh/plugins..."
+            echo "Copying [0m[01;34mzsh plugins[0m to /usr/share/zsh/plugins using sudo..."
             sudo cp -r ./zsh_plugins/plugins /usr/share/zsh/
             ;;
         3)
