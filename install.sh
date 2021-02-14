@@ -37,7 +37,7 @@ do
         2)
             echo ""
             echo "Copying [0m[01;34mzsh plugins[0m to /usr/share/zsh/plugins using sudo..."
-            sudo cp -r ./zsh_plugins/plugins /usr/share/zsh/
+            sudo pacman -S --needed zsh-autosuggestions zsh-syntax-highlighting zsg-completions zsh-history-substring-search
             ;;
         3)
             echo ""
