@@ -638,7 +638,45 @@ clientkeys = my_table.join(
             c.maximized = not c.maximized
             c:raise()
         end ,
-        {description = "maximize", group = "client"})
+        {description = "maximize", group = "client"}),
+    awful.key({ modkey,altkey     }, "Right",
+        function (c)
+            -- Move client to next tag and switch view to next tag
+            if client then 
+                local screen = client.focus.screen
+                local sel = screen.selected_tag
+                local sel_idx = sel.index
+                local tags = screen.tags
+                local target = gears.math.cycle(#tags, sel_idx + 1)
+                local tag = tags[target]
+                if client then
+                    if tag then
+                        client.focus:move_to_tag(tags[target])
+                        tag:view_only()
+                    end
+                end
+            end
+        end ,
+        {description = "Move client to next tag", group = "client"}),
+    awful.key({ modkey,altkey     }, "Left",
+        function (c)
+            -- Move client to next tag and switch view to next tag
+            if client then 
+                local screen = client.focus.screen
+                local sel = screen.selected_tag
+                local sel_idx = sel.index
+                local tags = screen.tags
+                local target = gears.math.cycle(#tags, sel_idx + -1)
+                local tag = tags[target]
+                if client then
+                    if tag then
+                        client.focus:move_to_tag(tags[target])
+                        tag:view_only()
+                    end
+                end
+            end
+        end ,
+        {description = "Move client to previous tag", group = "client"})
 )
 
 -- Bind all key numbers to tags.
