@@ -42,7 +42,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 " Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "needed for lightline
 " Plugin 'itchyny/lightline.vim' "cool status bar at the bottom
-Plugin 'rafi/awesome-vim-colorschemes' "predefined colorschemes (i.e. :colo dracula)
+Plugin 'rafi/awesome-vim-colorschemes' "predefined colorschemes (i.e. :colo gruvbox)
 
 
 
@@ -56,7 +56,7 @@ syntax on
 "Initializations
 "---------------------------
 
-let g:airline_theme='dracula'
+let g:airline_theme='gruvbox'
 let g:colorizer_auto_color = 1
 let g:colorizer_auto_filetype='css,html,lua,vim'
 "C# Autocomplete Omnisharp
@@ -92,7 +92,7 @@ set foldmethod=indent
 set foldlevel=99
 nnoremap <space> za
 
-colorscheme dracula
+colorscheme gruvbox
 
 "Enable lightline - cool bottom bar
 set laststatus=2
