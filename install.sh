@@ -13,6 +13,7 @@ options=(
          2 "copy zsh plugins to /usr/share/zsh/plugins" off
          3 "add fasd aliases to .zshrc?" off
          4 "install fasd with pacman" off
+         5 "place sleep hook for slock on suspend" off
      )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -48,6 +49,11 @@ do
             echo ""
             echo "Installing [0m[01;34mfasd[0m with pacman... (requires sudo)"
             sudo pacman -S --needed fasd
+            ;;
+        5)
+            echo ""
+            echo "Copying [0m[01;34msleep hook[0m (requires sudo)"
+            sudo cp -i ./suspend@.service /etc/systemd/system/suspend@.service
             ;;
     esac
 done

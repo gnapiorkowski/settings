@@ -1,0 +1,12 @@
+[Unit]
+Description=Lock the screen
+Before=sleep.target
+
+[Service]
+User=%I
+Environment=DISPLAY=:0
+ExecStartPre=/usr/bin/xset dpms force suspend
+ExecStart=/usr/bin/slock
+
+[Install]
+WantedBy=sleep.target
