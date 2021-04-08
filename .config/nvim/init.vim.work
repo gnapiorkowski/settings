@@ -2,6 +2,7 @@ call plug#begin('~/.vim/plugged')
 
 "Linting etc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"coc-marketplace, coc-clangd, coc-cmake
 
 "Navigation
 Plug 'justinmk/vim-sneak'
@@ -32,14 +33,6 @@ let g:colorizer_auto_color = 1
 let g:colorizer_auto_filetype='css,html,lua,vim'
 
 colorscheme gruvbox
-
-"C++ linting via syntastic and cpplint
-let g:syntastic_cpp_checkers = ['cpplint']
-let g:syntastic_c_checkers = ['cpplint']
-let g:syntastic_cpp_cpplint_exec = 'cpplint'
-" The following two lines are optional. Configure it to your liking!
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
 
 "NerCommenter
 filetype plugin on
