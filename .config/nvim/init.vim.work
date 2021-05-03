@@ -1,0 +1,210 @@
+call plug#begin('~/.vim/plugged')
+
+"Linting etc
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"coc-marketplace, coc-clangd, coc-cmake
+
+"Navigation
+Plug 'justinmk/vim-sneak'
+Plug 'tpope/vim-surround'
+Plug 'preservim/nerdtree'
+
+"Easy life
+Plug 'jiangmiao/auto-pairs'
+Plug 'preservim/nerdcommenter'
+
+"Themes
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+call plug#end()
+
+
+filetype plugin indent on    " required
+
+"Syntax highlighting on
+syntax on
+
+"Initializations
+"---------------------------
+
+let g:airline_theme='gruvbox'
+let g:colorizer_auto_color = 1
+let g:colorizer_auto_filetype='css,html,lua,vim'
+
+colorscheme gruvbox
+
+"NerCommenter
+filetype plugin on
+
+"Autocomplete commands with menu
+set wildmenu
+
+
+
+"Spliting
+set splitbelow
+set splitright
+
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+nnoremap <space> za
+
+
+"Enable lightline - cool bottom bar
+set laststatus=2
+"set noshowmode
+
+"Tabstops for all
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set autoindent
+
+"Lua specific settings
+au BufNewFile,BufRead *.lua
+    \ set tabstop=4
+    \ | set hiftwidth=4
+
+"HTML specific settings
+au BufNewFile,BufRead *.html
+    \ set tabstop=2
+    \ | set shiftwidth=2
+
+"CSS specific settings
+au BufNewFile,BufRead *.css
+    \ set tabstop=2
+    \ | set shiftwidth=2
+
+"Python specific settings
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    \ | set softtabstop=4
+    \ | set shiftwidth=4
+    \ | set textwidth=79
+    \ | set expandtab
+    \ | set autoindent
+    \ | set fileformat=unix 
+    \ | set encoding=utf-8
+
+
+"au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+set relativenumber
+set number
+
+let mapleader = ","
+let g:user_emmet_leader_key=','
+" set clipboard=unnamed
+
+"MAPs and remaps
+"---------------------------
+"Normal mode Mappings
+
+"Tab to cycle completions for coc
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+
+"hex highlighting
+nmap <F2>           :ColorHighlight<CR>
+
+    "copy and paste to system clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>y "+y
+nnoremap <leader>d "+d
+vnoremap <leader>p "+p
+vnoremap <leader>y "+y
+vnoremap <leader>d "+d
+
+    "turn off and on mouse
+nnoremap <leader>m :set mouse=a<CR>
+nnoremap <leader>M :set mouse=""<CR>
+vnoremap <leader>m :set mouse=a<CR>
+vnoremap <leader>M :set mouse=""<CR>
+
+
+    "split navigations
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+    "tabs
+nnoremap <A-j> :ALEDetails
+nnoremap <A-l> :tabprevious
+nnoremap <C-t>n :tabnew<CR>
+nnoremap <C-t>N <C-w>T
+nnoremap <C-t>q :tabc<CR>
+nnoremap <C-t>m :tabmove
+nnoremap <C-t>o :tabo<CR>
+nnoremap <C-t>r :tabdo
+
+    "Diff
+map <leader>1 :diffget 1<CR>
+map <leader>2 :diffget 2<CR>
+map <leader>3 :diffget 3<CR>
+map <leader>4 :diffget 4<CR>
+
+    "very magic search
+map <leader>v/ /\v
+    
+    "NERD Tree
+nnoremap <leader><C-n> :NERDTreeToggle<CR>
+
+"---------------------------
+"Visual Mode Mappings
+vnoremap g/ y/<C-R>"<CR>
+
+"---------------------------
+"Insert mode Mappings
+    "auto-pairs
+noremap! <C-l> <right>
+noremap! <C-H> <left>
+noremap! <C-k> <up>
+noremap! <C-j> <down>
+inoremap <Leader>w <esc>lwi
+inoremap <Leader>e <esc>lea
+inoremap <Leader>b <esc>lbi
+
+
+"Disable auto comments (after newline etc)
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+"Coc settings
+    "use K to show documentation
+nnoremap <silent> <leader>gd :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+
+"NERD commenter
+    " Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+    " Use compact syntax for prettified multi-line comments
+"let g:NERDCompactSexyComs = 1
+    " Align line-wise comment delimiters flush left instead of following code indentation
+"let g:NERDDefaultAlign = 'left'
+    " Set a language to use its alternate delimiters by default
+"let g:NERDAltDelims_java = 1
+    " Add your own custom formats or override the defaults
+"let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+    " Allow commenting and inverting empty lines (useful when commenting a region)
+"let g:NERDCommentEmptyLines = 1
+    " Enable trimming of trailing whitespace when uncommenting
+"let g:NERDTrimTrailingWhitespace = 1
+
+    " Enable NERDCommenterToggle to check all selected lines is commented or not 
+"let g:NERDToggleCheckAllLines = 1
+
+
+"Enable mouse support
+set mouse=a
